@@ -35,6 +35,13 @@ pnpm tauri build
 - `/` is the public landing page
 - `/app.html` is the timer; the Tauri window opens directly to this page
 
+## Releases and updates
+
+- The app checks for updates when it opens. Users can also check manually in Settings.
+- Push a tag in the format `app-v<version>` to build and publish signed macOS update artifacts through GitHub Actions.
+- Keep the Tauri updater private key in the repository secret `TAURI_SIGNING_PRIVATE_KEY` and in a secure local backup. Never commit the private key.
+- The first release that contains the updater must be installed manually; later releases can be installed from the in-app update notice.
+
 ## Non-MVP
 
 Menu bar mode, task tracking, full history, analytics, accounts, sync, mobile apps, AI features, and strict hardcore mode are intentionally out of scope for the first MVP.
