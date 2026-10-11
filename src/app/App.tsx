@@ -1,7 +1,11 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { SettingsPanel } from "../modules/settings/presentation/SettingsPanel";
 import { useTimer } from "../modules/timer/presentation/useTimer";
 import { notifySessionComplete } from "../modules/notifications/application/notifySessionComplete";
+import {
+  playSessionCompleteSound,
+  unlockSessionCompleteSound,
+} from "../modules/sound/application/sessionCompleteSound";
 import type { TimerMode } from "../modules/timer/domain/types";
 import { formatDuration, modeLabels } from "../modules/timer/domain/timer";
 import "./app.css";
@@ -16,6 +20,7 @@ function isTypingTarget(target: EventTarget | null) {
 export function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const timer = useTimer();
+  const handledCompletion = useRef<typeof timer.completedSession>(null);
   const progress = timer.state.totalSeconds
     ? 1 - timer.state.remainingSeconds / timer.state.totalSeconds
     : 0;
@@ -26,11 +31,24 @@ export function App() {
     return "Start";
   }, [timer.state.status]);
 
+  const toggleTimer = () => {
+    if (timer.settings.soundEnabled) unlockSessionCompleteSound();
+    timer.toggle();
+  };
+
+  const saveSettings = (settings: typeof timer.settings) => {
+    if (settings.soundEnabled) unlockSessionCompleteSound();
+    timer.updateSettings(settings);
+  };
+
   useEffect(() => {
-    if (timer.completedSession) {
-      notifySessionComplete(timer.completedSession, timer.settings.notificationsEnabled);
-    }
-  }, [timer.completedSession, timer.settings.notificationsEnabled]);
+    const completedSession = timer.completedSession;
+    if (!completedSession || handledCompletion.current === completedSession) return;
+
+    handledCompletion.current = completedSession;
+    if (timer.settings.soundEnabled) playSessionCompleteSound();
+    notifySessionComplete(completedSession, timer.settings.notificationsEnabled);
+  }, [timer.completedSession, timer.settings.notificationsEnabled, timer.settings.soundEnabled]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -39,7 +57,7 @@ export function App() {
       const key = event.key.toLowerCase();
       if (event.key === " ") {
         event.preventDefault();
-        timer.toggle();
+        toggleTimer();
       }
       if (key === "r") timer.reset();
       if (key === "1") timer.switchMode("focus");
@@ -53,7 +71,7 @@ export function App() {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [timer]);
+  }, [timer, toggleTimer]);
 
   return (
     <main className="shell">
@@ -91,13 +109,20 @@ export function App() {
           </div>
 
           <div className="controls" aria-label="Timer controls">
-            <button className="primary-control" onClick={timer.toggle} type="button">
+            <button className="primary-control" onClick={toggleTimer} type="button">
               {controlLabel}
             </button>
             <button className="ghost-control" onClick={timer.reset} type="button">
               Reset
             </button>
-            <button className="ghost-control" onClick={() => timer.completeCurrentSession()} type="button">
+            <button
+              className="ghost-control"
+              onClick={() => {
+                if (timer.settings.soundEnabled) unlockSessionCompleteSound();
+                timer.completeCurrentSession();
+              }}
+              type="button"
+            >
               Complete
             </button>
             <button className="icon-control" aria-label="Open settings" onClick={() => setSettingsOpen(true)} type="button">
@@ -129,7 +154,7 @@ export function App() {
         isOpen={settingsOpen}
         settings={timer.settings}
         onClose={() => setSettingsOpen(false)}
-        onSave={timer.updateSettings}
+        onSave={saveSettings}
       />
     </main>
   );
