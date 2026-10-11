@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import { SettingsPanel } from "../modules/settings/presentation/SettingsPanel";
 import { useTimer } from "../modules/timer/presentation/useTimer";
 import { notifySessionComplete } from "../modules/notifications/application/notifySessionComplete";
+import { UpdateNotice } from "../modules/updater/presentation/UpdateNotice";
+import { useAppUpdater } from "../modules/updater/presentation/useAppUpdater";
 import {
   playSessionCompleteSound,
   unlockSessionCompleteSound,
@@ -20,6 +22,7 @@ function isTypingTarget(target: EventTarget | null) {
 export function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const timer = useTimer();
+  const updater = useAppUpdater();
   const handledCompletion = useRef<typeof timer.completedSession>(null);
   const progress = timer.state.totalSeconds
     ? 1 - timer.state.remainingSeconds / timer.state.totalSeconds
@@ -173,6 +176,14 @@ export function App() {
         settings={timer.settings}
         onClose={() => setSettingsOpen(false)}
         onSave={saveSettings}
+        updateStatus={updater.status}
+        onCheckForUpdates={updater.checkForUpdates}
+        onInstallUpdate={updater.installUpdate}
+      />
+      <UpdateNotice
+        status={updater.status}
+        onInstall={updater.installUpdate}
+        onDismiss={updater.dismissNotice}
       />
     </main>
   );

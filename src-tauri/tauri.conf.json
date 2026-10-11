@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Locked In",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "identifier": "com.luamramlow.lockedin",
   "build": {
     "beforeDevCommand": "pnpm dev",
@@ -26,6 +26,7 @@
   },
   "bundle": {
     "active": true,
+    "createUpdaterArtifacts": true,
     "targets": "all",
     "icon": [
       "icons/32x32.png",
@@ -34,5 +35,13 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEFCMzgwMUNCNzVFNkRCRDgKUldUWTIrWjF5d0U0cTZYNWRwTVpnaDA4N0ZXdkdnWC9wQVB5d09Ic2NhUXpIMW1QSnhKTXI2aEMK",
+      "endpoints": [
+        "https://github.com/ramlow07/locked-in/releases/latest/download/latest.json"
+      ]
+    }
   }
 }

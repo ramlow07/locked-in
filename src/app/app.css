@@ -506,6 +506,126 @@ h2 {
   flex: 1 1 0;
 }
 
+.update-settings {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(244, 251, 255, 0.12);
+}
+
+.update-settings-heading {
+  display: grid;
+  gap: 8px;
+}
+
+.update-settings-heading .eyebrow {
+  margin-bottom: 4px;
+}
+
+.update-settings-heading h3 {
+  margin: 0;
+  color: #effbff;
+  font-size: 1rem;
+}
+
+.update-settings-status,
+.update-notice-copy {
+  margin: 0;
+  color: #9eb5bf;
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.update-settings-actions,
+.update-notice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.update-settings-actions button,
+.update-notice-actions button {
+  min-width: 0;
+  min-height: 38px;
+  flex: 1 1 auto;
+  padding-inline: 10px;
+  font-size: 0.68rem;
+}
+
+.update-progress {
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 99px;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  accent-color: #60f4ff;
+}
+
+.update-progress::-webkit-progress-bar {
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.update-progress::-webkit-progress-value {
+  border-radius: 99px;
+  background: #60f4ff;
+  box-shadow: 0 0 12px rgba(96, 244, 255, 0.45);
+}
+
+.update-notice {
+  width: min(420px, calc(100vw - 32px));
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(113, 235, 255, 0.36);
+  background: rgba(8, 14, 24, 0.98);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55), 0 0 30px rgba(96, 244, 255, 0.09);
+  animation: drawer-enter 220ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.update-notice-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(96, 244, 255, 0.3);
+  color: #60f4ff;
+  background: rgba(96, 244, 255, 0.08);
+}
+
+.update-notice-icon svg {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.update-notice-content {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.update-notice-content .eyebrow {
+  margin: 0;
+}
+
+.update-notice-content h2 {
+  margin: 0;
+  color: #effbff;
+  font-size: 1rem;
+}
+
 button:focus-visible,
 input:focus-visible {
   outline: 2px solid #60f4ff;
@@ -573,5 +693,10 @@ input:focus-visible {
     width: min(400px, calc(100vw - 28px));
     max-height: calc(100vh - 28px);
     padding: 18px;
+  }
+
+  .update-notice {
+    right: 14px;
+    bottom: 14px;
   }
 }

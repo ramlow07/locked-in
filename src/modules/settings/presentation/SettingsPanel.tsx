@@ -1,14 +1,26 @@
 import { useEffect, useId, useRef, useState } from "react";
 import type { TimerSettings } from "../../timer/domain/types";
+import type { AppUpdateStatus } from "../../updater/presentation/useAppUpdater";
 
 type SettingsPanelProps = {
   isOpen: boolean;
   settings: TimerSettings;
   onClose: () => void;
   onSave: (settings: TimerSettings) => void;
+  updateStatus: AppUpdateStatus;
+  onCheckForUpdates: () => void;
+  onInstallUpdate: () => void;
 };
 
-export function SettingsPanel({ isOpen, settings, onClose, onSave }: SettingsPanelProps) {
+export function SettingsPanel({
+  isOpen,
+  settings,
+  onClose,
+  onSave,
+  updateStatus,
+  onCheckForUpdates,
+  onInstallUpdate,
+}: SettingsPanelProps) {
   const [draft, setDraft] = useState(settings);
   const dialogRef = useRef<HTMLElement>(null);
   const onCloseRef = useRef(onClose);
@@ -136,6 +148,41 @@ export function SettingsPanel({ isOpen, settings, onClose, onSave }: SettingsPan
           />
         </div>
 
+        <section className="update-settings" aria-labelledby="update-settings-title">
+          <div className="update-settings-heading">
+            <div>
+              <p className="eyebrow">Software</p>
+              <h3 id="update-settings-title">Updates</h3>
+            </div>
+            <p className="update-settings-status" aria-live="polite">
+              {getUpdateStatusMessage(updateStatus)}
+            </p>
+          </div>
+          {updateStatus.kind === "installing" && updateStatus.progress !== null && (
+            <progress
+              className="update-progress"
+              max="100"
+              value={updateStatus.progress}
+              aria-label="Update progress"
+            />
+          )}
+          <div className="update-settings-actions">
+            <button
+              className="ghost-control"
+              onClick={onCheckForUpdates}
+              disabled={updateStatus.kind === "checking" || updateStatus.kind === "installing" || updateStatus.kind === "unsupported"}
+              type="button"
+            >
+              {updateStatus.kind === "checking" ? "Checking…" : "Check for updates"}
+            </button>
+            {updateStatus.kind === "available" && (
+              <button className="primary-control" onClick={onInstallUpdate} type="button">
+                Install update
+              </button>
+            )}
+          </div>
+        </section>
+
         <div className="drawer-actions">
           <button className="ghost-control" onClick={onClose} type="button">
             Cancel
@@ -154,6 +201,23 @@ export function SettingsPanel({ isOpen, settings, onClose, onSave }: SettingsPan
       </aside>
     </div>
   );
+}
+
+function getUpdateStatusMessage(status: AppUpdateStatus) {
+  switch (status.kind) {
+    case "checking":
+      return "Checking for updates…";
+    case "up-to-date":
+      return "You’re up to date.";
+    case "available":
+      return `Version ${status.version} is available.`;
+    case "installing":
+      return status.progress === null ? "Installing update…" : `Installing update… ${status.progress}%`;
+    case "error":
+      return "Couldn’t check for updates. Try again.";
+    case "unsupported":
+      return "Available in the desktop app.";
+  }
 }
 
 type NumberFieldProps = {
