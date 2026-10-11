@@ -29,4 +29,14 @@ export default defineConfig(async () => ({
       ignored: ["**/src-tauri/**"],
     },
   },
+
+  // Keep the marketing site at `/` and ship the timer as a separate entry for Tauri.
+  build: {
+    rollupOptions: {
+      input: {
+        landing: "index.html",
+        app: "app.html",
+      },
+    },
+  },
 }));

@@ -1,6 +1,6 @@
 # Locked In
 
-Locked In is a macOS-first Pomodoro app for developers. The MVP is a polished dark focus cockpit with configurable focus and break sessions, local persistence, keyboard shortcuts, today stats, and native session-complete notifications.
+Locked In is a macOS-first Pomodoro app for developers. It pairs a focused timer with a lightweight landing page, configurable focus and break sessions, local persistence, keyboard shortcuts, today stats, and session-complete notifications and sound.
 
 ## Stack
 
@@ -27,7 +27,13 @@ pnpm tauri build
 - Configurable durations and long-break interval
 - Local settings and today stats persistence
 - macOS notification on session completion
+- Optional two-note sound on session completion
 - Keyboard shortcuts: Space, R, 1, 2, 3, Cmd/Ctrl + comma
+
+## Pages
+
+- `/` is the public landing page
+- `/app.html` is the timer; the Tauri window opens directly to this page
 
 ## Non-MVP
 

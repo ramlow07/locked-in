@@ -5,7 +5,7 @@
   "identifier": "com.luamramlow.lockedin",
   "build": {
     "beforeDevCommand": "pnpm dev",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:1420/app.html",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "Locked In",
+        "url": "app.html",
         "width": 920,
         "height": 720,
         "minWidth": 520,
