@@ -14,7 +14,7 @@ const modeOrder: TimerMode[] = ["focus", "shortBreak", "longBreak"];
 
 function isTypingTarget(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
-  return ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable;
+  return ["A", "BUTTON", "INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable;
 }
 
 export function App() {
@@ -88,12 +88,13 @@ export function App() {
         </header>
 
         <section className="timer-panel" aria-label="Current session">
-          <div className="mode-selector" aria-label="Timer mode selector">
+          <div className="mode-selector" role="group" aria-label="Timer mode selector">
             {modeOrder.map((mode) => (
               <button
                 className={timer.state.mode === mode ? "mode active" : "mode"}
                 key={mode}
                 onClick={() => timer.switchMode(mode)}
+                aria-pressed={timer.state.mode === mode}
                 type="button"
               >
                 {modeLabels[mode]}
@@ -103,7 +104,14 @@ export function App() {
 
           <div className="timer-display">
             <div className="ring" style={{ "--progress": `${progress * 360}deg` } as CSSProperties}>
-              <div className="time">{formatDuration(timer.state.remainingSeconds)}</div>
+              <div
+                className="time"
+                role="timer"
+                aria-label={`${formatDuration(timer.state.remainingSeconds)} remaining`}
+                aria-live="off"
+              >
+                {formatDuration(timer.state.remainingSeconds)}
+              </div>
               <div className="mode-name">{modeLabels[timer.state.mode]}</div>
             </div>
           </div>
@@ -125,8 +133,18 @@ export function App() {
             >
               Complete
             </button>
-            <button className="icon-control" aria-label="Open settings" onClick={() => setSettingsOpen(true)} type="button">
-              ⚙
+            <button
+              className="icon-control"
+              aria-label="Open settings"
+              aria-haspopup="dialog"
+              aria-expanded={settingsOpen}
+              onClick={() => setSettingsOpen(true)}
+              type="button"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path d="M12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z" />
+                <path d="m19.4 15 .05.04a1.75 1.75 0 0 1-2.47 2.47l-.04-.05a1.74 1.74 0 0 0-2.96 1.23v.14a1.75 1.75 0 0 1-3.5 0v-.07a1.74 1.74 0 0 0-2.96-1.23l-.04.05a1.75 1.75 0 1 1-2.47-2.47l.05-.04a1.74 1.74 0 0 0-1.23-2.96h-.14a1.75 1.75 0 0 1 0-3.5h.07a1.74 1.74 0 0 0 1.23-2.96l-.05-.04a1.75 1.75 0 1 1 2.47-2.47l.04.05a1.74 1.74 0 0 0 2.96-1.23v-.14a1.75 1.75 0 0 1 3.5 0v.07a1.74 1.74 0 0 0 2.96 1.23l.04-.05a1.75 1.75 0 0 1 2.47 2.47l-.05.04a1.74 1.74 0 0 0 1.23 2.96h.14a1.75 1.75 0 0 1 0 3.5h-.07A1.74 1.74 0 0 0 19.4 15Z" />
+              </svg>
             </button>
           </div>
         </section>
