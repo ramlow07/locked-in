@@ -1,5 +1,7 @@
 import "./landing.css";
 
+const downloadUrl = "https://github.com/ramlow07/locked-in/releases/latest";
+
 const features = [
   {
     title: "A steady rhythm",
@@ -26,8 +28,8 @@ export function LandingPage() {
           </span>
         </a>
 
-        <a className="header-cta" href="/app.html">
-          Open the timer <ArrowIcon />
+        <a className="header-cta" href={downloadUrl} target="_blank" rel="noreferrer">
+          Download for macOS <DownloadIcon />
         </a>
       </header>
 
@@ -43,12 +45,13 @@ export function LandingPage() {
           </h1>
           <p className="hero-description">
             Locked In is a simple timer for focused work, real breaks, and the rhythm in between.
+            <br />
+            Made for MacOS users.
           </p>
           <div className="hero-actions">
-            <a className="button-primary" href="/app.html">
-              Open the timer <ArrowIcon />
+            <a className="button-primary" href={downloadUrl} target="_blank" rel="noreferrer">
+              Download for macOS <DownloadIcon />
             </a>
-            <span className="hero-platform">Made for macOS</span>
           </div>
           <p className="hero-note">
             No account needed <span aria-hidden="true">·</span> Your progress stays on this device
@@ -98,7 +101,9 @@ export function LandingPage() {
           <span>LOCKED-IN</span>
         </a>
         <span>Make room to focus.</span>
-        <a href="/app.html">Open the timer <ArrowIcon /></a>
+        <a href={downloadUrl} target="_blank" rel="noreferrer">
+          Download for macOS <DownloadIcon />
+        </a>
       </footer>
     </main>
   );
@@ -113,11 +118,11 @@ function BrandMark() {
   );
 }
 
-function ArrowIcon() {
+function DownloadIcon() {
   return (
-    <svg aria-hidden="true" className="arrow-icon" viewBox="0 0 18 18" fill="none">
+    <svg aria-hidden="true" className="download-icon" viewBox="0 0 18 18" fill="none">
       <path
-        d="M3.75 9h10.5m0 0-4.5-4.5M14.25 9l-4.5 4.5"
+        d="M9 2.75v8.5m0 0 3.25-3.25M9 11.25 5.75 8M3.5 13.25v1.25c0 .55.45 1 1 1h9c.55 0 1-.45 1-1v-1.25"
         stroke="currentColor"
         strokeWidth="1.6"
         strokeLinecap="round"

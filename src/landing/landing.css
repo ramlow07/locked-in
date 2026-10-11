@@ -141,15 +141,15 @@ a {
   color: #fff;
 }
 
-.arrow-icon {
+.download-icon {
   width: 17px;
   height: 17px;
   flex: none;
   transition: transform 180ms ease;
 }
 
-a:hover .arrow-icon {
-  transform: translateX(3px);
+a:hover .download-icon {
+  transform: translateY(2px);
 }
 
 .hero {
@@ -233,11 +233,6 @@ a:hover .arrow-icon {
 .button-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 38px rgba(101, 236, 241, 0.28);
-}
-
-.hero-platform {
-  color: #929ca9;
-  font-size: 11px;
 }
 
 .hero-note {
@@ -480,7 +475,7 @@ a:hover .arrow-icon {
   color: var(--landing-cyan);
 }
 
-.site-footer .arrow-icon {
+.site-footer .download-icon {
   width: 14px;
   height: 14px;
 }
@@ -542,7 +537,7 @@ a:hover .arrow-icon {
     font-size: 11px;
   }
 
-  .header-cta .arrow-icon {
+  .header-cta .download-icon {
     width: 15px;
   }
 
